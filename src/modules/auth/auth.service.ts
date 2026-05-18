@@ -2,7 +2,7 @@ import { comparePassword } from "@/utils/password";
 import prisma from "@/config/database";
 import { signToken } from "@/utils/jwt";
 import { extractDuplicateField } from "@/utils/utils";
-import { Prisma } from "@/../generated/prisma/client";
+import { Prisma, type User } from "@/../generated/prisma/client";
 
 export const getUserByEmailOrMobile = async (identifier: string) => {
 	try {
@@ -26,15 +26,14 @@ export const getUserByEmailOrMobile = async (identifier: string) => {
 };
 
 export const login = async (
-	name: string | undefined,
-	email: string,
+	user: User,
 	password: string,
-	hashedPassword: string | undefined,
 ) => {
-	const match = await comparePassword(password, hashedPassword || "");
+	const match = await comparePassword(password, user.password || "");
 	if (match === false) return { isValid: false, jwt: null };
+	console.log(user, "user")
 	const jwt = signToken({
-		user: { name, email },
+		user: { name: user.name, email: user.email, mobile: user.mobile },
 	});
 
 	return { isValid: match, jwt };

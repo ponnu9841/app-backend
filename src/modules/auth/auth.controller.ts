@@ -12,7 +12,7 @@ export const login = async (
 
 		const identifier = email || mobileNumber;
 		const user = await AuthService.getUserByEmailOrMobile(identifier);
-        
+
 		if (!user) {
 			res.status(404).send({
 				error: "User not found",
@@ -20,12 +20,7 @@ export const login = async (
 			return;
 		}
 
-		const { isValid, jwt } = await AuthService.login(
-			user?.name,
-			email,
-			password,
-			user?.password,
-		);
+		const { isValid, jwt } = await AuthService.login(user, password);
 		if (isValid) {
 			res.status(200).send({ data: { token: jwt } });
 			return;
