@@ -11,7 +11,7 @@ export const errorHandler = (
 	Logger.error(err);
 
 	if (err instanceof SyntaxError && "body" in err) {
-		return ApiResponse.error(res, "Invalid JSON payload", 400);
+		return ApiResponse.error(res, "Invalid request", 400);
 	}
 
 	return ApiResponse.error(
