@@ -1,9 +1,10 @@
-import { Request, Response, NextFunction } from "express";
-import { verifyToken } from "@/utils/jwt";
-
-export interface AuthRequest extends Request {
-	user?: any;
-}
+import { Response, NextFunction } from "express";
+import { decodeToken } from "@/utils/jwt";
+import {
+	AuthRequest,
+	AuthRequestWithUser,
+	AuthUser,
+} from "@/types/authRequest";
 
 export const authMiddleware = (
 	req: AuthRequest,
@@ -11,6 +12,8 @@ export const authMiddleware = (
 	next: NextFunction,
 ) => {
 	const authHeader = req.headers.authorization;
+
+	// console.log(authHeader, "first")
 
 	if (!authHeader || !authHeader.startsWith("Bearer ")) {
 		res.status(401).json({ message: "Unauthorized" });
@@ -21,9 +24,11 @@ export const authMiddleware = (
 	if (!token) return res.status(401).json({ message: "Unauthorized" });
 
 	try {
-		const decoded = verifyToken(token) as { user: any };
-		if (typeof decoded === "object") {
-			req.user = decoded;
+		const decoded = decodeToken(token) as {
+			user: AuthUser;
+		};
+		if (decoded && typeof decoded === "object") {
+			req.user = decoded.user;
 			next();
 			return;
 		}
@@ -34,4 +39,20 @@ export const authMiddleware = (
 	}
 
 	return;
+};
+
+export const userExistsMiddleware = (
+	req: AuthRequestWithUser,
+	res: Response,
+	next: NextFunction,
+) => {
+	try {
+		if (!req.user) {
+			res.status(401).json({ message: "User not found" });
+		}
+		next();
+		return;
+	} catch (error) {
+		next(error);
+	}
 };

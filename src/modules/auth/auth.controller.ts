@@ -8,9 +8,10 @@ export const login = async (
 	next: NextFunction,
 ) => {
 	try {
-		const { email, mobileNumber, password } = req.body;
+		const { email, phoneNumber, password } = req.body;
 
-		const identifier = email || mobileNumber;
+		const identifier = email || phoneNumber;
+		console.log(identifier)
 		const user = await AuthService.getUserByEmailOrMobile(identifier);
 
 		if (!user) {
@@ -43,7 +44,7 @@ export const register = async (
 		const reqBody = {
 			name: data.name as string,
 			email: data.email as string,
-			mobile: data.mobileNumber as string,
+			phone: data.phoneNumber as string,
 			password: hashedPassword,
 		};
 		const userCreated = await AuthService.register(reqBody);

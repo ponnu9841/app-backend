@@ -13,7 +13,7 @@ export const getUserByEmailOrMobile = async (identifier: string) => {
 						email: identifier,
 					},
 					{
-						mobile: identifier,
+						phone: identifier,
 					},
 				],
 			},
@@ -25,15 +25,14 @@ export const getUserByEmailOrMobile = async (identifier: string) => {
 	}
 };
 
-export const login = async (
-	user: User,
-	password: string,
-) => {
+export const login = async (user: User, password: string) => {
 	const match = await comparePassword(password, user.password || "");
 	if (match === false) return { isValid: false, jwt: null };
-	console.log(user, "user")
 	const jwt = signToken({
-		user: { name: user.name, email: user.email, mobile: user.mobile },
+		user: {
+			id: user.id,
+			role: user.role,
+		},
 	});
 
 	return { isValid: match, jwt };
@@ -42,7 +41,7 @@ export const login = async (
 export const register = async (data: {
 	name: string;
 	email: string;
-	mobile: string;
+	phone: string;
 	password: string;
 }) => {
 	try {

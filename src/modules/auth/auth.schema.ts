@@ -4,14 +4,14 @@ export const registrationSchema = z
 	.object({
 		name: z.string(),
 		email: z.email().optional(),
-		mobileNumber: z
+		phoneNumber: z
 			.string()
 			.regex(/^\d{10}$/, "Mobile number must be 10 digits")
 			.optional(),
 
 		password: z.string().min(6),
 	})
-	.refine((data) => data.email || data.mobileNumber, {
+	.refine((data) => data.email || data.phoneNumber, {
 		message: "Either email or mobile number is required",
 		path: ["email"],
 	});
@@ -19,13 +19,13 @@ export const registrationSchema = z
 export const loginSchema = z
 	.object({
 		email: z.email().optional(),
-		mobileNumber: z
+		phoneNumber: z
 			.string()
 			.regex(/^\d{10}$/, "Mobile number must be 10 digits")
 			.optional(),
 		password: z.string().min(6),
 	})
-	.refine((data) => data.email || data.mobileNumber, {
+	.refine((data) => data.email || data.phoneNumber, {
 		message: "Either email or mobile number is required",
 		path: ["email"],
 	});
