@@ -16,7 +16,7 @@ export const login = async (name: string | undefined, email: string, password: s
     const match = await comparePassword(password, hashedPassword || "");
     if (match === false) return { isValid: false, jwt: null };
     const jwt = signToken({
-        user: { name, email, password },
+        user: { name, email },
     });
 
     return { isValid: match, jwt };

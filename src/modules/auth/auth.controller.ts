@@ -24,8 +24,8 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
         const hashedPassword = await hashPassword(data.password);
         const reqBody = {
-            name: req.body.name as string,
-            email: req.body.email as string,
+            name: data.name as string,
+            email: data.email as string,
             password: hashedPassword
         }
         const userCreated = await AuthService.register(reqBody);

@@ -4,14 +4,12 @@ import helmet from "helmet";
 import * as env from "./config/env";
 import { morganMiddleware, errorHandler } from "./middlewares";
 import routes from "./routes";
-import bodyParser from 'body-parser';
 import path from "path";
 
 const app = express();
 
 // Middlewares
-// app.use(express.json());
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
     cors({
