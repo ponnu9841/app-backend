@@ -17,7 +17,7 @@ model User {
     name      String
     email     String   @unique
     password  String
-    address   Address?
+    address   Address[]
     role      Role     @default(user)
     createdAt DateTime @default(now())
 }
