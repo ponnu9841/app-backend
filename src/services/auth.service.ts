@@ -1,6 +1,6 @@
-import { comparePassword } from "../utils/password";
-import prisma from "../config/database";
-import { signToken } from "../utils/jwt";
+import { comparePassword } from "@/utils/password";
+import prisma from "@/config/database";
+import { signToken } from "@/utils/jwt";
 
 
 export const getUserByEmail = async (email: string) => {

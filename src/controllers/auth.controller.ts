@@ -1,6 +1,6 @@
 import { type Request, type Response, type NextFunction } from "express"
-import * as AuthService from "../services/auth.service"
-import { hashPassword } from "../utils/password";
+import * as AuthService from "@/services/auth.service"
+import { hashPassword } from "@/utils/password";
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
     try {

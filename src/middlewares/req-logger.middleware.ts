@@ -1,5 +1,5 @@
 import morgan from "morgan";
-import { Logger } from "../utils/logger";
+import { Logger } from "@/utils/logger";
 
 const stream = {
 	write: (message: string) => Logger.http(message.trim()),
