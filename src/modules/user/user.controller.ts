@@ -1,5 +1,5 @@
 import { type Request, type Response, type NextFunction } from "express"
-import * as UserService from "@/services/user.service"
+import * as UserService from "./user.service"
 import { AuthRequest } from "@/types/authRequest";
 import { hashPassword } from "@/utils/password";
 
