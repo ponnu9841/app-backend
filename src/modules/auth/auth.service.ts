@@ -1,6 +1,8 @@
 import { comparePassword } from "@/utils/password";
 import prisma from "@/config/database";
 import { signToken } from "@/utils/jwt";
+import { extractDuplicateField } from "@/utils/utils";
+import { Prisma } from "@/../generated/prisma/client";
 
 
 export const getUserByEmail = async (email: string) => {
@@ -25,10 +27,24 @@ export const login = async (name: string | undefined, email: string, password: s
 export const register = async (data: {
     name: string;
     email: string;
+    mobile: string;
     password: string;
 }) => {
-    const user = await prisma.user.create({
-        data
-    })
-    return user;
+    try {
+        const user = await prisma.user.create({ data });
+        return user;
+    } catch (err) {
+        if (
+            err instanceof Prisma.PrismaClientKnownRequestError &&
+            err.code === "P2002"
+        ) {
+            const field = extractDuplicateField(err) ?? "field";
+            const error: Error & { status?: number } = new Error(
+                `An account with this ${field} already exists`,
+            );
+            error.status = 409;
+            throw error;
+        }
+        throw err;
+    }
 }

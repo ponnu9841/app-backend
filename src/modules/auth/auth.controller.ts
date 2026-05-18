@@ -26,6 +26,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
         const reqBody = {
             name: data.name as string,
             email: data.email as string,
+            mobile: data.mobileNumber as string,
             password: hashedPassword
         }
         const userCreated = await AuthService.register(reqBody);

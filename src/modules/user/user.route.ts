@@ -1,8 +1,8 @@
 import { Router } from "express";
 import * as UserController from "./user.controller";
 import { authMiddleware } from "@/middlewares/auth.middleware";
-import { validateData } from "@/utils/validationMiddleware";
 import { userUpdateSchema } from "./user.schema";
+import { validateRequestBody } from "@/middlewares/validation";
 
 const router = Router();
 
@@ -10,7 +10,7 @@ router.get("/me", authMiddleware, UserController.getUser);
 router.put(
 	"/",
 	authMiddleware,
-	validateData(userUpdateSchema),
+	validateRequestBody(userUpdateSchema),
 	UserController.updateUser,
 );
 
